@@ -1,7 +1,22 @@
 import random
 import time
 import os
-
+                                                                                                                                        """ create_board: Initializes an empty board as a 2D list.
+                                                                                                                                        draw_board: Clear and redraws the board and current piece.
+                                                                                                                                        valid_position: Checks if a piece can be legally placed on the board.
+                                                                                                                                        join_matrixes: Merges a piece into the main board when it lands.
+                                                                                                                                        clear_lines: Removes complete lines from the board.
+                                                                                                                                        rotate: Rotates the Tetris piece. """#////////////////////////////////"""
+                                                                                                                                                        
+                                                                                                                                                        
+                                                                                                                                                        
+                                                                                                                                                        
+                                                                                                                                                        
+                                                                                                                                                        
+                                                                                                                                                        
+                                                                                                                                                        
+                                                                                                                                                        
+                                                                                                                                                        
 # Define the shapes of the blocks and their rotations
 SHAPES = [
     [[1, 1, 1, 1]],  # I shape

@@ -1,14 +1,87 @@
-import random  # for random outcomes
+import random             # This imports the random module, which allows us to generate random numbers.
 
 # Initialize player health
-player_health = 100
+player_health = 100            # This sets the player's health to 100 at the start of the game.
 
 # Get user and companions' names
-player_name = input("Enter your name: ").strip()  # prompt for the user name
-companion_names = []
-for i in range(3):
-    companion_name = input(f"Enter the name of companion {i + 1}: ").strip()  # prompt for the companions name
-    companion_names.append(companion_name)
+player_name = input("Enter your name: ").strip()  # Ask the player for their name and remove any extra spaces.
+companion_names = []                             # Create an empty list to store the names of companions.
+for i in range(3):                             # Loop three times to get names for three companions.
+    companion_name = input(f"Enter the name of companion {i + 1}: ").strip()  # Ask for each companion's name.
+    companion_names.append(companion_name)                    # Add the companion's name to the list.
+
+
+
+# Define a simple companion class
+class Companion:  # Create a class called Companion to define companion characters.
+    def __init__(self, name, health, weapon):  # This function initializes each companion with a name, health, and weapon.
+        self.name = name  # Set the companion's name.
+        self.health = health  # Set the companion's health.
+        self.weapon = weapon  # Set the companion's weapon.
+
+    def attack(self, enemy):  # Define a method for the companion to attack an enemy.
+        damage = self.weapon['damage']  # Get the damage value from the companion's weapon.
+        enemy['health'] -= damage  # Reduce the enemy's health by the damage amount.
+        print(f"{self.name} attacks {enemy['name']} for {damage} damage!")  # Print the attack message.
+
+    def heal(self):  # Define a method for the companion to heal themselves.
+        heal_amount = 10  # Set the amount of health to heal.
+        self.health += heal_amount  # Increase the companion's health.
+        print(f"{self.name} heals themselves for {heal_amount} health!")  # Print the healing message.
+
+# Define a simple enemy class
+class Enemy:  # Create a class called Enemy to define enemy characters.
+    def __init__(self, name, health):  # This function initializes each enemy with a name and health.
+        self.name = name  # Set the enemy's name.
+        self.health = health  # Set the enemy's health.
+
+# Define companions with their weapons
+companions = [  # Create a list of companions with their names, health, and weapons.
+    Companion("Ally1", 50, {'name': 'Sword', 'damage': 15}),  # First companion with a sword.
+    Companion("Ally2", 40, {'name': 'Bow', 'damage': 10})  # Second companion with a bow.
+]
+
+# Define a boss enemy
+boss = Enemy("Dark Lord", 100)  # Create a boss enemy named "Dark Lord" with 200 health.
+
+# Function to handle the boss fight
+def boss_fight(player_health, companions, boss):  # Define a function for the boss fight.
+    while player_health > 0 and boss.health > 0:  # Continue fighting while both the player and boss are alive.
+        action = input("Choose your action: (1) Attack, (2) Heal, (3) Command Companion ").strip()  # Ask the player what they want to do.
+        if action == "1":  # If the player chooses to attack.
+            damage = 20  # Set the damage the player does.
+            boss.health -= damage  # Reduce the boss's health by the damage amount.
+            print(f"You attack {boss.name} for {damage} damage!")  # Print the attack message.
+        elif action == "2":  # If the player chooses to heal.
+            heal_amount = 25  # Set the amount of health to heal.
+            player_health += heal_amount  # Increase the player's health.
+            print(f"You heal yourself for {heal_amount} health!")  # Print the healing message.
+        elif action == "3":  # If the player chooses to command a companion.
+            companion_choice = input("Choose a companion to command: ").strip()  # Ask which companion to command.
+            for companion in companions:  # Loop through the list of companions.
+                if companion.name.lower() == companion_choice.lower():  # Check if the chosen companion matches.
+                    companion.attack({'name': boss.name, 'health': boss.health})  # Command the companion to attack the boss.
+                    break  # Exit the loop after the companion attacks.
+        else:  # If the player enters an invalid action.
+            print("Invalid action!")  # Print an error message.
+
+        # Boss retaliates
+        if boss.health > 0:  # If the boss is still alive.
+            boss_damage = 25  # Set the damage the boss does.
+            player_health -= boss_damage  # Reduce the player's health by the boss's damage.
+            print(f"{boss.name} attacks you for {boss_damage} damage!")  # Print the boss's attack message.
+
+        # Companions act intelligently
+        for companion in companions:  # Loop through each companion.
+            if companion.health < 20:  # If the companion's health is low.
+                companion.heal()  # The companion heals themselves.
+            else:  # If the companion's health is not low.
+                companion.attack({'name': boss.name, 'health': boss.health})  # The companion attacks the boss.
+
+    if player_health <= 0:  # If the player's health drops to zero or below.
+        print("You have been defeated by the boss!")  # Print defeat message.
+    else:  # If the player is still alive.
+        print("You have defeated the boss!")  # Print victory message.
 
 # Print welcome message
 print(f"Welcome to Dreams and Nightmares, {player_name}!")  # greets player
@@ -16,7 +89,8 @@ print(f"You awake in a room with your companions, {', '.join(companion_names)}. 
 print("A sinister voice hisses through the darkness: 'Survive till dawn... or be consumed by the shadows forever.'")
 print("You see three doors, each marked with a symbol: a decaying skull, a bleeding eye, and a severed hand. Each door whispers promises of salvation and threats of doom. Choose wisely... for your choice may be your last. (choose: Skull, Eye, or Hand?)")
 
-# Prompt user for a choice
+
+# Prompt user for a choice /MAIN GAME LOOP
 doorChoice = input("> ").strip().lower()  # door choice
 
 if doorChoice == "exit":  # Check if user wants to exit the game
